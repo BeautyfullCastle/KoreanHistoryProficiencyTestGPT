@@ -1,0 +1,250 @@
+/* QuestionCard Widget — 한국사능력검정시험 기출 마스터 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1117;
+  --surface: #1c1f2e;
+  --surface2: #252836;
+  --border: #2e3249;
+  --accent: #6c8ef5;
+  --accent2: #a78bfa;
+  --correct: #22c55e;
+  --wrong: #ef4444;
+  --text: #e8eaf6;
+  --text-sub: #8b92b8;
+  --radius: 14px;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0;
+}
+
+#root { width: 100%; }
+
+/* ── 앱 레이아웃 ── */
+.app {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── 헤더 ── */
+.header {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+.header p { font-size: 0.85rem; color: var(--text-sub); }
+
+/* ── 컨트롤 바 ── */
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.controls label { font-size: 0.85rem; color: var(--text-sub); white-space: nowrap; }
+.controls input[type="number"] {
+  width: 70px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.btn {
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+}
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--text-sub);
+  border: 1px solid var(--border);
+}
+.btn:hover { opacity: 0.85; }
+
+/* ── 점수판 ── */
+.scoreboard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.score-item { display: flex; flex-direction: column; gap: 2px; }
+.score-label { font-size: 0.75rem; color: var(--text-sub); }
+.score-value { font-size: 1.3rem; font-weight: 700; }
+.score-value.correct { color: var(--correct); }
+.score-value.wrong   { color: var(--wrong);   }
+.score-value.total   { color: var(--accent);  }
+
+/* ── 문항 카드 ── */
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.question-card.answered-correct { border-color: var(--correct); }
+.question-card.answered-wrong   { border-color: var(--wrong);   }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.q-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.q-score {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  margin-left: auto;
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.img-badge {
+  font-size: 0.72rem;
+  background: rgba(167,139,250,0.15);
+  color: var(--accent2);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(167,139,250,0.3);
+}
+
+.card-body { padding: 18px; }
+
+/* 문항 이미지 */
+.question-image {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 14px;
+  display: block;
+  background: #fff;
+}
+
+/* 질문 텍스트 */
+.question-text {
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* 지문 */
+.source-material {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* 선택지 */
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(108,142,245,0.08);
+}
+.choice-btn:disabled { cursor: default; }
+.choice-btn.selected-correct {
+  border-color: var(--correct);
+  background: rgba(34,197,94,0.12);
+}
+.choice-btn.selected-wrong {
+  border-color: var(--wrong);
+  background: rgba(239,68,68,0.12);
+}
+.choice-btn.reveal-correct {
+  border-color: var(--correct);
+  background: rgba(34,197,94,0.08);
+}
+.choice-sym {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 20px;
+  flex-shrink: 0;
+}
+.choice-btn.selected-correct .choice-sym { color: var(--correct); }
+.choice-btn.selected-wrong   .choice-sym { color: var(--wrong);   }
+
+/* 결과 배너 */
+.result-banner {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.result-banner.correct { background: rgba(34,197,94,0.15);  color: var(--correct); }
+.result-banner.wrong   { background: rgba(239,68,68,0.15);  color: var(--wrong);   }
+
+/* ── 빈 상태 ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-sub);
+}
+.empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
