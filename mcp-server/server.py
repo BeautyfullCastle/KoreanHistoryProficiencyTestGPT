@@ -23,6 +23,18 @@ from mcp.server.fastmcp import FastMCP
 # ─── 데이터 로드 ──────────────────────────────────────────────────────────────
 DATA_DIR = Path(__file__).parent.parent / "data"
 
+# GitHub raw 이미지 베이스 URL (public repo)
+GITHUB_RAW_BASE = (
+    "https://raw.githubusercontent.com/"
+    "BeautyfullCastle/KoreanHistoryProficiencyTestGPT/main"
+)
+
+def image_url(image_path: str | None) -> str | None:
+    """image_path → 완전한 GitHub raw URL 변환. ChatGPT 채팅창에서 이미지 렌더링."""
+    if not image_path:
+        return None
+    return f"{GITHUB_RAW_BASE}/data/{image_path}"
+
 def load_exam(exam_no: int) -> dict | None:
     path = DATA_DIR / f"questions_{exam_no}.json"
     if not path.exists():
@@ -84,6 +96,7 @@ def get_question(exam_no: int, question_no: int) -> dict:
         return {"error": f"{exam_no}회 {question_no}번 문항을 찾을 수 없습니다."}
 
     # 정답 숨기고 반환
+    img = image_url(q.get("image_path"))
     return {
         "id":              q["id"],
         "exam_no":         exam_no,
@@ -92,7 +105,8 @@ def get_question(exam_no: int, question_no: int) -> dict:
         "question_text":   q["question_text"],
         "source_material": q["source_material"],
         "has_image":       q["has_image"],
-        "image_note":      q.get("image_note"),
+        # 이미지가 있으면 마크다운 형식으로 포함 → ChatGPT 채팅창에서 직접 렌더링
+        "image":           f"![{exam_no}회 {question_no}번]({img})" if img else None,
         "choices":         q["choices"],
         "hint":            "grade_answer 도구로 답을 제출하면 정오표를 확인할 수 있습니다.",
     }
@@ -219,6 +233,7 @@ def random_quiz(count: int = 5, exam_no: int = 0) -> dict:
     sampled = random.sample(all_qs, min(count, len(all_qs)))
     questions = []
     for eno, q in sampled:
+        img = image_url(q.get("image_path"))
         questions.append({
             "id":            q["id"],
             "exam_no":       eno,
@@ -227,7 +242,7 @@ def random_quiz(count: int = 5, exam_no: int = 0) -> dict:
             "question_text": q["question_text"],
             "source_material": q["source_material"],
             "has_image":     q["has_image"],
-            "image_note":    q.get("image_note"),
+            "image":         f"![{eno}회 {q['question_no']}번]({img})" if img else None,
             "choices":       q["choices"],
         })
 
