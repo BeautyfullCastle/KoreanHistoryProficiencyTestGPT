@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: korean-history-mcp
+    env: python
+    buildCommand: pip install -r mcp-server/requirements.txt
+    startCommand: cd mcp-server && python server.py
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
