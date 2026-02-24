@@ -257,8 +257,8 @@ def random_quiz(count: int = 5, exam_no: int = 0) -> dict:
 
 # ─── 실행 (Vercel Serverless ASGI) ────────────────────────────────────────────────
 # Vercel 환경에서는 파일 스크립트 실행(mcp.run) 대신
-# Starlette/FastAPI ASGI 인스턴스인 `app` 변수를 찾습니다.
-app = mcp._create_starlette_app()
+# FastAPI/Starlette ASGI 인스턴스인 `app` 변수를 찾습니다.
+app = mcp.streamable_http_app()
 
 if __name__ == "__main__":
     # 로컬 테스트용
